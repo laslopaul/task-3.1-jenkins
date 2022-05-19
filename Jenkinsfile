@@ -46,7 +46,7 @@ pipeline {
                         [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
                         ssh-keyscan -t rsa,dsa ${DEPLOY_HOST} >> ~/.ssh/known_hosts
                         scp deploy.sh ${DEPLOY_USER}@${DEPLOY_HOST}:~/
-                        ssh ${DEPLOY_USER}@${DEPLOY_HOST} ./deploy.sh $BRANCH
+                        ssh ${DEPLOY_USER}@${DEPLOY_HOST} ./deploy.sh $BRANCH $BUILD_NUMBER
                     '''
                 }
         }
