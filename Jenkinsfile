@@ -15,7 +15,7 @@ pipeline {
             steps {
                 script {
                     echo "Build stage"
-                    app = docker.build("flask-hello")
+                    app = docker.build("laslopaul/flask-hello")
                 }
             }
         }
