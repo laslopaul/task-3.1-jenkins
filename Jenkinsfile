@@ -41,7 +41,7 @@ pipeline {
         stage ("Deploy") {
             steps {
                 echo "Deploy stage"
-                sshagent(credentials : ["ec2-keypair"]) {
+                sshagent(credentials : ["keypair-ec2"]) {
                     sh '''
                         [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
                         ssh-keyscan -t rsa,dsa ${DEPLOY_HOST} >> ~/.ssh/known_hosts
