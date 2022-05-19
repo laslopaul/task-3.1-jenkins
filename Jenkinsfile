@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Cloning Git') {
             steps {
-                git([url: 'https://github.com/laslopaul/task-3.1-jenkins.git', branch: params.BRANCH])
+                git([url: 'https://github.com/laslopaul/task-3.1-jenkins.git', branch: params.BRANCH], credentialsId: 'laslopaul-github')
  
       }
     }
