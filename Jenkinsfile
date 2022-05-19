@@ -1,7 +1,7 @@
 pipeline {
     agent any
     parameters {
-        string(name: "BRANCH", defaultValue: "staging", trim: true, description: "Git branch to build")
+        choice(name: "BRANCH", choices: ["staging". "main"], description: "Git branch to build")
         string(name: "DEPLOY_USER", defaultValue: "ubuntu", trim: true, description: "Username pn the deploy server")
         string(name: "DEPLOY_HOST", defaultValue: "ec2-52-207-241-186.compute-1.amazonaws.com", trim: true, description: "Address of the deployment server")
     }
@@ -46,7 +46,7 @@ pipeline {
                         [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
                         ssh-keyscan -t rsa,dsa ${DEPLOY_HOST} >> ~/.ssh/known_hosts
                         scp deploy.sh ${DEPLOY_USER}@${DEPLOY_HOST}:~/
-                        ssh ${DEPLOY_USER}@${DEPLOY_HOST} ./deploy.sh
+                        ssh ${DEPLOY_USER}@${DEPLOY_HOST} ./deploy.sh $BRANCH
                     '''
                 }
         }
