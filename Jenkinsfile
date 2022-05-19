@@ -1,7 +1,7 @@
 pipeline {
     agent any
     parameters {
-        choice(name: "BRANCH", defaultValue: "staging", description: "Git branch to build")
+        string(name: "BRANCH", defaultValue: "staging", description: "Git branch to build")
         string(name: "DEPLOY_USER", defaultValue: "ubuntu", trim: true, description: "Username on the deployment server")
         string(name: "DEPLOY_HOST", defaultValue: "ec2-52-207-241-186.compute-1.amazonaws.com", trim: true, description: "Address of the deployment server")
     }
