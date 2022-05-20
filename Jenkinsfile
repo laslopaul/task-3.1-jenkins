@@ -1,3 +1,5 @@
+properties([pipelineTriggers([githubPush()])])
+
 pipeline {
     agent any
     environment {
@@ -12,27 +14,6 @@ pipeline {
     parameters {
         string(name: "DEPLOY_USER", defaultValue: "ubuntu", trim: true, description: "Username on the deployment server")
         string(name: "DEPLOY_HOST", defaultValue: "ec2-54-242-249-97.compute-1.amazonaws.com", trim: true, description: "Address of the deployment server")
-    }
-    
-    triggers {
-        GenericTrigger(
-         genericVariables: [
-          [key: 'ref', value: '$.ref']
-         ],
-
-         causeString: "Triggered on push $ref",
-
-         token: '262e2aefce1765eea88053b7ea6ce5800d3a7c06',
-         tokenCredentialId: '',
-
-         printContributedVariables: false,
-         printPostContent: true,
-
-         silentResponse: false,
-
-         regexpFilterText: "$ref",
-         regexpFilterExpression: "refs/heads/$BRANCH_NAME"
-        )
     }
     
     stages {
