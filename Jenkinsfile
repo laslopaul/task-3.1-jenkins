@@ -17,21 +17,21 @@ pipeline {
     triggers {
         GenericTrigger(
          genericVariables: [
-          [key: "ref", value: '$.ref']
+          [key: 'ref', value: '$.ref']
          ],
 
          causeString: "Triggered on push $ref",
 
          token: '262e2aefce1765eea88053b7ea6ce5800d3a7c06',
-         tokenCredentialId: 'webhook-trigger',
+         tokenCredentialId: '',
 
          printContributedVariables: false,
          printPostContent: true,
 
          silentResponse: false,
 
-         regexpFilterText: '$ref',
-         regexpFilterExpression: 'refs/heads/' + env.BRANCH_NAME
+         regexpFilterText: "$ref",
+         regexpFilterExpression: "refs/heads/$BRANCH_NAME"
         )
     }
     
