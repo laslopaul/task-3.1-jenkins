@@ -1,16 +1,24 @@
 pipeline {
     agent any
+    environment {
+        BRANCH_NAME = "staging"
+        DOCKER_IMAGE = "laslopaul/flask-hello"
+    }
+    
+    options { 
+        buildDiscarder(logRotator(numToKeepStr: '5')) 
+    }
+
     parameters {
-        string(name: "BRANCH", defaultValue: "staging", description: "Git branch to build")
         string(name: "DEPLOY_USER", defaultValue: "ubuntu", trim: true, description: "Username on the deployment server")
-        string(name: "DEPLOY_HOST", defaultValue: "ec2-52-207-241-186.compute-1.amazonaws.com", trim: true, description: "Address of the deployment server")
+        string(name: "DEPLOY_HOST", defaultValue: "ec2-54-242-249-97.compute-1.amazonaws.com", trim: true, description: "Address of the deployment server")
     }
     
     stages {
         stage("Cloning Git") {
             steps {
-                echo "Checkout to $BRANCH"
-                git([url: "https://github.com/laslopaul/task-3.1-jenkins.git", branch: params.BRANCH, credentialsId: "laslopaul-github"])
+                echo "Checkout to ${BRANCH_NAME}"
+                git([url: "https://github.com/laslopaul/task-3.1-jenkins.git", branch: env.BRANCH_NAME, credentialsId: "laslopaul-github"])
  
             }
         }
@@ -19,7 +27,7 @@ pipeline {
             steps {
                 script {
                     echo "Build stage"
-                    app = docker.build("laslopaul/flask-hello")
+                    app = docker.build(env.DOCKER_IMAGE)
                 }
             }
         }
@@ -29,10 +37,7 @@ pipeline {
                 script {
                     echo "Backup stage"
                     docker.withRegistry( "", "docker-hub" ) {
-                    app.push("$BUILD_NUMBER-$BRANCH")
-                    if (env.BRANCH_NAME == "main") {
-                        app.push('latest')
-                    }
+                    app.push("$BUILD_NUMBER-$BRANCH_NAME")
           }
         }
       }
@@ -46,10 +51,17 @@ pipeline {
                         [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
                         ssh-keyscan -t rsa,dsa ${DEPLOY_HOST} >> ~/.ssh/known_hosts
                         scp deploy.sh ${DEPLOY_USER}@${DEPLOY_HOST}:~/
-                        ssh ${DEPLOY_USER}@${DEPLOY_HOST} ./deploy.sh $BRANCH $BUILD_NUMBER
+                        ssh ${DEPLOY_USER}@${DEPLOY_HOST} ./deploy.sh $BUILD_NUMBER
                     '''
                 }
         }
     }
+    }
+    
+    post {
+        success {
+            echo "Remove unused local Docker image"
+            sh "docker rmi $DOCKER_IMAGE:$BUILD_NUMBER-$BRANCH_NAME"
+        }
     }
 } 
