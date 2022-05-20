@@ -22,8 +22,8 @@ pipeline {
 
          causeString: "Triggered on push $ref",
 
-         token: 'push',
-         tokenCredentialId: '',
+         token: '262e2aefce1765eea88053b7ea6ce5800d3a7c06',
+         tokenCredentialId: 'webhook-trigger',
 
          printContributedVariables: false,
          printPostContent: true,
