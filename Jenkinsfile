@@ -14,6 +14,27 @@ pipeline {
         string(name: "DEPLOY_HOST", defaultValue: "ec2-54-242-249-97.compute-1.amazonaws.com", trim: true, description: "Address of the deployment server")
     }
     
+    triggers {
+        GenericTrigger(
+         genericVariables: [
+          [key: "ref", value: "$.ref"]
+         ],
+
+         causeString: "Triggered on push $ref",
+
+         token: 'push',
+         tokenCredentialId: '',
+
+         printContributedVariables: false,
+         printPostContent: true,
+
+         silentResponse: false,
+
+         regexpFilterText: '$ref',
+         regexpFilterExpression: 'refs/heads/' + env.BRANCH_NAME
+        )
+    }
+    
     stages {
         stage("Cloning Git") {
             steps {
