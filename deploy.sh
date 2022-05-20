@@ -13,4 +13,4 @@ echo "Starting to deploy docker image.."
 DOCKER_IMAGE=laslopaul/flask-hello
 docker pull $DOCKER_IMAGE:$DOCKER_TAG
 docker ps -q --filter ancestor=$DOCKER_IMAGE | xargs -r docker stop
-docker run -dp $PORT:$PORT $DOCKER_IMAGE
+docker run -dp $PORT:$PORT $DOCKER_IMAGE:$DOCKER_TAG
