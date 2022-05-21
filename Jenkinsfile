@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        BRANCH_NAME = "staging"
+        BRANCH_NAME = "main"
         DOCKER_IMAGE = "laslopaul/flask-hello"
     }
     
@@ -38,6 +38,7 @@ pipeline {
                     echo "Backup stage"
                     docker.withRegistry( "", "docker-hub" ) {
                     app.push("$BUILD_NUMBER-$BRANCH_NAME")
+                    app.push("latest")
           }
         }
       }
@@ -51,7 +52,7 @@ pipeline {
                         [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
                         ssh-keyscan -t rsa,dsa ${DEPLOY_HOST} >> ~/.ssh/known_hosts
                         scp deploy.sh ${DEPLOY_USER}@${DEPLOY_HOST}:~/
-                        ssh ${DEPLOY_USER}@${DEPLOY_HOST} ./deploy.sh $BUILD_NUMBER
+                        ssh ${DEPLOY_USER}@${DEPLOY_HOST} ./deploy.sh
                     '''
                 }
         }

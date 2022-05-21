@@ -1,9 +1,9 @@
 # A shell script to deploy Docker image to EC2 instance via Jenkinsfile
 
-PORT=5000
+PORT=8000
 DOCKER_IMAGE=laslopaul/flask-hello
-DOCKER_CONTAINER=flask-hello-staging
-DOCKER_TAG=$1-staging
+DOCKER_CONTAINER=flask-hello-production
+DOCKER_TAG=latest
 
 echo "Starting to deploy docker image.."
 docker pull $DOCKER_IMAGE:$DOCKER_TAG
