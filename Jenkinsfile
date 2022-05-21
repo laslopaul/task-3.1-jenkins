@@ -5,12 +5,15 @@ pipeline {
     environment {
         BRANCH_NAME = "staging"
         DOCKER_IMAGE = "laslopaul/flask-hello"
-        DEPLOY_USER = "ubuntu"
-        DEPLOY_HOST = "ec2-54-242-249-97.compute-1.amazonaws.com"
     }
     
     options { 
         buildDiscarder(logRotator(numToKeepStr: '5')) 
+    }
+
+    parameters {
+        string(name: "DEPLOY_USER", defaultValue: "ubuntu", trim: true, description: "Username on the deployment server")
+        string(name: "DEPLOY_HOST", defaultValue: "ec2-54-242-249-97.compute-1.amazonaws.com", trim: true, description: "Address of the deployment server")
     }
     
     stages {
