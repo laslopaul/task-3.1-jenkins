@@ -25,20 +25,16 @@ pipeline {
         
         stage("Build") {
             steps {
-                script {
-                    echo "Build stage"
-                    app = docker.build(env.DOCKER_IMAGE)
-                }
+                echo "Build stage"
+                app = docker.build(env.DOCKER_IMAGE)
             }
         }
         
         stage("Backup") {
             steps {
-                script {
-                    echo "Backup stage"
-                    docker.withRegistry( "", "docker-hub" ) {
-                    app.push("$BUILD_NUMBER-$BRANCH_NAME")
-          }
+                echo "Backup stage"
+                docker.withRegistry( "", "docker-hub" ) {
+                app.push("$BUILD_NUMBER-$BRANCH_NAME")
         }
       }
     }
