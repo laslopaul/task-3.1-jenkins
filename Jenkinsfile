@@ -1,5 +1,3 @@
-properties([pipelineTriggers([githubPush()])])
-
 pipeline {
     agent any
     environment {
@@ -13,7 +11,7 @@ pipeline {
 
     parameters {
         string(name: "DEPLOY_USER", defaultValue: "ubuntu", trim: true, description: "Username on the deployment server")
-        string(name: "DEPLOY_HOST", defaultValue: "ec2-54-242-249-97.compute-1.amazonaws.com", trim: true, description: "Address of the deployment server")
+        string(name: "DEPLOY_HOST", defaultValue: "ec2-18-234-211-241.compute-1.amazonaws.com", trim: true, description: "Address of the deployment server")
     }
     
     stages {
